@@ -35,4 +35,7 @@ casovna_vrsta2 <- ts(tabela_skupna[,7], start=c(2011,1), frequency=12)
 vektor_imen <- c("6-mesečna obrestna mera", "9-mesečna obrestna mera")
 
 ts.plot(casovna_vrsta1, casovna_vrsta2,main = "6-mesečna in 9-mesečna obrestna mera", xlab = "Leto", ylab = "Obrestna mera", col = c("blue","red"), lwd = 3) 
-legend('topright', vektor_imen, lty = 1, col = c("blue", "red"), lwd = 3)
+#legend('topright', vektor_imen, lty = 1, col = c("blue", "red"), lwd = 3)
+
+tabela_urejena <- data.frame(tabela_skupna)
+tabela_za_drugi_graf <- tabela_urejena[c("X01.04.2011", "X01.06.2012", "X02.05.2013"),]
