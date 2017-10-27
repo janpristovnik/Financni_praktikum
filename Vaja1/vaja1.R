@@ -2,6 +2,7 @@ library(dplyr)
 library(readr)
 library(reshape2)
 library(ggplot2)
+#library(plyr)
 
 #uvozimo tabele
 prva_tabela <- read.csv("Vaja1/Podatki/hist_EURIBOR_2011.csv") %>% select(X,X03.01.2011, X01.02.2011, X01.03.2011, X01.04.2011, X01.04.2011, X02.05.2011, X01.06.2011, X01.07.2011, X01.08.2011, X01.09.2011, X03.10.2011, X01.11.2011, X01.12.2011)
@@ -31,7 +32,9 @@ colnames(tretja_tabela_urejeno) <- imena3
 tabela_skupna <- rbind(prva_tabela_urejeno, druga_tabela_urejeno, tretja_tabela_urejeno)
 tabela_skupna2 <- tabela_skupna
 tabela_skupna <- tabela_skupna[,c(1,2,4,5,6,9,12,15)]
-
+tabela3 <- tabela_skupna[,c(6,7)]
+tabela3[,1] <- as.numeric(as.character(tabela3[,1]))
+tabela3[,2] <- as.numeric(as.character(tabela3[,2]))
 #kreiranje časovne vrste za prvi graf
 casovna_vrsta1 <- ts(tabela_skupna[,6], start=c(2011,1), frequency=12)
 casovna_vrsta2 <- ts(tabela_skupna[,7], start=c(2011,1), frequency=12)
@@ -63,3 +66,23 @@ lines(tabela_za_drugi_graf[,c(2)], x=casovni_vektor,col="blue", type="o",pch = 1
 lines(tabela_za_drugi_graf[,c(1)], x=casovni_vektor,col="red", type="o",pch = 16, text(10,5,"1.4.2011", col="red"))
 lines(tabela_za_drugi_graf[,c(3)], x=casovni_vektor,col="green", type="o",pch = 16, text(10,3,"2.5.2013", col="green"))
 
+#racunanje L(0,T,U)
+#tabela_skupna[,6] <- as.numeric(as.character(tabela_skupna[,6]))
+#tabela_skupna[,7] <- as.numeric(as.character(tabela_skupna[,7]))
+#v vektorju <- vetkor3 so shranjeni
+Napovedana <- c(0)
+tabela3 <- cbind(tabela3,Napovedana)
+
+i=1
+while (i<37)
+  {
+  tabela3[i,3] <-(1/3)*((1+9*(as.numeric(as.character(tabela3[i,2]))))/(1 + 6*(as.numeric(as.character(tabela3[i,1]))))-1)
+  i = i+1
+}
+Euribor3m <- tabela_skupna[,5]
+tabela3 <- cbind(tabela3,Euribor3m)
+tabela_primerjava <- tabela3[,c(0,4,3)]
+
+#rename(tabela_primerjava, c("V1" = "Euribor3mesecna", "vektor3" = "Napovedana"))
+
+names(tabela_primerjava) <- c("Napovedana", "Euribor3m")
