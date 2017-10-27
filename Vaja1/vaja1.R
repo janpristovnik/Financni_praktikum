@@ -1,7 +1,7 @@
 library(dplyr)
 library(readr)
 library(reshape2)
-
+library(ggplot2)
 
 #uvozimo tabele
 prva_tabela <- read.csv("Vaja1/Podatki/hist_EURIBOR_2011.csv") %>% select(X,X03.01.2011, X01.02.2011, X01.03.2011, X01.04.2011, X01.04.2011, X02.05.2011, X01.06.2011, X01.07.2011, X01.08.2011, X01.09.2011, X03.10.2011, X01.11.2011, X01.12.2011)
@@ -27,6 +27,7 @@ colnames(druga_tabela_urejeno) <- imena2
 colnames(tretja_tabela_urejeno) <- imena3
 
 tabela_skupna <- rbind(prva_tabela_urejeno, druga_tabela_urejeno, tretja_tabela_urejeno)
+tabela_skupna2 <- tabela_skupna
 tabela_skupna <- tabela_skupna[,c(1,2,4,5,6,9,12,15)]
 
 casovna_vrsta1 <- ts(tabela_skupna[,6], start=c(2011,1), frequency=12)
@@ -37,5 +38,26 @@ vektor_imen <- c("6-mesečna obrestna mera", "9-mesečna obrestna mera")
 ts.plot(casovna_vrsta1, casovna_vrsta2,main = "6-mesečna in 9-mesečna obrestna mera", xlab = "Leto", ylab = "Obrestna mera", col = c("blue","red"), lwd = 3) 
 #legend('topright', vektor_imen, lty = 1, col = c("blue", "red"), lwd = 3)
 
-tabela_urejena <- data.frame(tabela_skupna)
+tabela_urejena <- data.frame(tabela_skupna2)
 tabela_za_drugi_graf <- tabela_urejena[c("X01.04.2011", "X01.06.2012", "X02.05.2013"),]
+
+casovni_vektor = c(0.25,0.5,0.75,1,2,3,4,5,6,7,8,9,10,11,12)
+
+tabela_za_drugi_graf <- t(tabela_za_drugi_graf)
+tabela_za_drugi_graf <- data.frame(tabela_za_drugi_graf)
+tabela_za_drugi_graf <- cbind(tabela_za_drugi_graf,casovni_vektor)
+
+tabela_za_drugi_graf[,1] <- as.numeric(as.character(tabela_za_drugi_graf[,1]))
+tabela_za_drugi_graf[,2] <- as.numeric(as.character(tabela_za_drugi_graf[,2]))
+tabela_za_drugi_graf[,3] <- as.numeric(as.character(tabela_za_drugi_graf[,3]))
+                                       
+
+drugi_graf <- plot( y = tabela_za_drugi_graf[,c(1)], x=casovni_vektor, ylim=c(min(0),max(5.5)),xlab="Dospetje [mesec]", ylab="%", col="red", main="Casovna struktura Euribor")
+lines(tabela_za_drugi_graf[,c(2)], x=casovni_vektor,col="blue", type="o",pch = 16, text(10,4,"1.6.2012", col="blue"))
+lines(tabela_za_drugi_graf[,c(1)], x=casovni_vektor,col="red", type="o",pch = 16, text(10,5,"1.4.2011", col="red"))
+lines(tabela_za_drugi_graf[,c(3)], x=casovni_vektor,col="green", type="o",pch = 16, text(10,3,"2.5.2013", col="green"))
+#tabela_za_drugi_graf <- t(tabela_za_drugi_graf)
+#tabela_za_drugi_graf <- data.frame(tabela_za_drugi_graf)
+#tabela_za_drugi_graf["casovni vektor"] <- casovni_vektor
+
+#drugi_graf <- ggplot(tabela_za_drugi_graf, x = casovni_vektor, y = X01.04.2011) + geom_bar(stat = "identity", position = "dodge")
