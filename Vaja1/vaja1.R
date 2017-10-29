@@ -84,3 +84,18 @@ tabela3 <- cbind(tabela3,Euribor3m)
 tabela_primerjava <- tabela3[,c(0,4,3)]
 Napovedana <- c(c(NA,NA,NA,NA,NA,NA),tabela_primerjava[c(1:30),2])
 tabela_primerjava[,2] <- Napovedana
+
+#naredimo tabelo za zadnje grafe
+
+tabela_primerjava_graf <- tabela_primerjava[c(7:36),]
+tabela_primerjava_graf <- as.data.frame(tabela_primerjava_graf)
+tabela_primerjava_graf[,1] <- as.numeric(as.character(tabela_primerjava_graf[,1]))
+tabela_primerjava_graf[,2] <- as.numeric(as.character(tabela_primerjava_graf[,2]))
+
+l2011 <- tabela_primerjava_graf[c(1:6),]
+l2012 <- tabela_primerjava_graf[c(7:18),]
+l2013 <- tabela_primerjava_graf[c(19:30),]
+graf3 <- plot(x = l2011[,2], y = l2011[,1],xlab= "Napovedana", ylab = "Opazovana",  main="6m Euribor 2011-2013")
+points(x=l2011[,2], y = l2011[,1], type = "p", col="red",pch = 16)
+points(x=l2012[,2], y = l2012[,1], type = "p", col="blue",pch = 16)
+points(x=l2013[,2], y = l2013[,1], type = "p", col="green",pch = 16)
