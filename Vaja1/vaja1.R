@@ -70,8 +70,8 @@ lines(tabela_za_drugi_graf[,c(3)], x=casovni_vektor,col="green", type="o",pch = 
 #tabela_skupna[,6] <- as.numeric(as.character(tabela_skupna[,6]))
 #tabela_skupna[,7] <- as.numeric(as.character(tabela_skupna[,7]))
 #v vektorju <- vetkor3 so shranjeni
-Napovedana <- c(0)
-tabela3 <- cbind(tabela3,Napovedana)
+Vektor <- c(0)
+tabela3 <- cbind(tabela3,Vektor)
 
 i=1
 while (i<37)
@@ -82,7 +82,5 @@ while (i<37)
 Euribor3m <- tabela_skupna[,5]
 tabela3 <- cbind(tabela3,Euribor3m)
 tabela_primerjava <- tabela3[,c(0,4,3)]
-
-#rename(tabela_primerjava, c("V1" = "Euribor3mesecna", "vektor3" = "Napovedana"))
-
-names(tabela_primerjava) <- c("Napovedana", "Euribor3m")
+Napovedana <- c(c(NA,NA,NA,NA,NA,NA),tabela_primerjava[c(1:30),2])
+tabela_primerjava[,2] <- Napovedana
