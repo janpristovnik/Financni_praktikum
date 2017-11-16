@@ -1,6 +1,6 @@
 library(actuar)
 #Uvozimo podatke in narišemo histogram 1.a
-vzorec <- scan("Podatki/vzorec1.txt")
+vzorec <- scan("Vaja2/Podatki/vzorec1.txt")
 
 
 
@@ -33,9 +33,26 @@ h = 0.5
 n = 19
 
 
-#Y_CDF <- 1 - exp(-(x/scale)^shape)
+#2.b
 diskretna_y <- discretize(1 - exp(-(x/scale)^shape),from = 0, to= h*n , step = h ,method = "rounding") 
 vektor_x <- seq(0,9,0.5)
 graf <- plot(stepfun(vektor_x, diffinv(diskretna_y)))
 curve(pweibull(x,shape,scale),add=TRUE, from = 0,to = 9, col = "red", lwd = 3)
 
+#2.c S Panjerjevim algoritmom bom izračunal porazdelitveno funkcijo kumulativne škode S
+porazdelitvena <- aggregateDist(method = "recursive",
+                                model.freq = "poisson",
+                                model.sev = diskretna_y,
+                                x.scale = h,
+                                lambda =15,
+                                tol = 0.01,
+                                convolve = 0
+                                )
+
+plot(porazdelitvena)
+
+#2.d izračunaj upanje in disperzijo komulativne škode
+
+
+
+Upanje_S_diskretno <- (vektor_x %*% diskretna_y) *15
