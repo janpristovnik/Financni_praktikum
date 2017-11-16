@@ -52,7 +52,7 @@ porazdelitvena <- aggregateDist(method = "recursive",
 
 plot(porazdelitvena)
 
-#2.d izračunaj upanje in disperzijo komulativne škode Var(s) = var(y)*e(n) + e(y)^2*var(n)
+#2.d izračunaj upanje in disperzijo komulativne škode Var(s) = var(y)*E(N) + E(y)^2*var(N)
 
 
 
@@ -67,5 +67,27 @@ Var_S <- Var_y * 15 + E_y ^2 * 15
 
 odst_995 <- VaR(porazdelitvena, 0.995)
 izpad_005 <- CTE(porazdelitvena, 0.005)
+
+#3.naloga
+#3.a 
+
+vektor_N <- rpois(10000, 15)
+vektor_vmesni <- c(0)
+vektor_S <- vector(mode= "numeric", length = 10000)
+stevec =1
+for (i in vektor_N) {
+  vektor_vmesni <- rweibull(i, shape, scale)
+  vektor_S[stevec] <- sum(vektor_vmesni)
+  stevec = stevec +1
+}
+
+#vektor_S
+
+#2.b
+
+Upanje_simulacija = mean(vektor_S)
+Variacija_simulacija = var(vektor_S)
+
+#upanje podobno, varianca razlikuje kar precej -> zelo podobno varianci iz 1.naloge
 
 
