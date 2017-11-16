@@ -45,14 +45,21 @@ porazdelitvena <- aggregateDist(method = "recursive",
                                 model.sev = diskretna_y,
                                 x.scale = h,
                                 lambda =15,
-                                tol = 0.01,
+                                tol = 0.002,
                                 convolve = 0
                                 )
 
 plot(porazdelitvena)
 
-#2.d izračunaj upanje in disperzijo komulativne škode
+#2.d izračunaj upanje in disperzijo komulativne škode Var(s) = var(y)*e(n) + e(y)^2*var(n)
 
 
 
 Upanje_S_diskretno <- (vektor_x %*% diskretna_y) *15
+E_y <- vektor_x %*% diskretna_y
+E_ykvadrat <- (vektor_x^2 %*% diskretna_y)
+Var_y <- E_ykvadrat - E_y ^2 
+
+Var_S <- Var_y * 15 + E_y ^2 * 15
+
+
