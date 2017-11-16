@@ -34,15 +34,16 @@ n = 19
 
 
 #2.b
-diskretna_y <- discretize(1 - exp(-(x/scale)^shape),from = 0, to= h*n , step = h ,method = "rounding") 
+diskretna_y <- discretize(1 - exp(-(x/scale)^shape),from = 0, to= h*n , step = h ,method = "rounding")
+diskretna_y1 <- discretize(1 - exp(-(x/scale)^shape),from = 0, to= 1000 , step = h ,method = "rounding")
 vektor_x <- seq(0,9,0.5)
 graf <- plot(stepfun(vektor_x, diffinv(diskretna_y)))
-curve(pweibull(x,shape,scale),add=TRUE, from = 0,to = 9, col = "red", lwd = 3)
+curve(pweibull(x,shape,scale),add=TRUE, from = 0,to = 9, col = "red", lwd = 2)
 
 #2.c S Panjerjevim algoritmom bom izračunal porazdelitveno funkcijo kumulativne škode S
 porazdelitvena <- aggregateDist(method = "recursive",
                                 model.freq = "poisson",
-                                model.sev = diskretna_y,
+                                model.sev = diskretna_y1,
                                 x.scale = h,
                                 lambda =15,
                                 tol = 0.002,
@@ -61,5 +62,10 @@ E_ykvadrat <- (vektor_x^2 %*% diskretna_y)
 Var_y <- E_ykvadrat - E_y ^2 
 
 Var_S <- Var_y * 15 + E_y ^2 * 15
+
+#2.e
+
+odst_995 <- VaR(porazdelitvena, 0.995)
+izpad_005 <- CTE(porazdelitvena, 0.005)
 
 
