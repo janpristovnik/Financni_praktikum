@@ -1,3 +1,6 @@
+library(combinat)
+library(Rlab)
+
 #naloga 1
 
 #1.a
@@ -41,5 +44,19 @@ izplacilo <- function(vrsta, T, type = c("call", "put") ) {
   return( max( min(vrsta[(T+1):length(vrsta)])  -   min(vrsta[1:T]), 0) )}
 }
 
+#2.naloga
+
+binomski <- function(S0,u,d,U,R,T,type){
+  q = (1+R-d)/(u-d)
+  razpleti <- hcube(rep(2,U), translation = -1)
+  razpleti_1 <- d**razpleti * u**(1-razpleti)
+  S0_vektor <- rep(S_0, 2**U)
+  razpleti_2 <- cbind(S0_vektor, razpleti_1)
+  apply()
+}
+  
+
+
+  
 
 
