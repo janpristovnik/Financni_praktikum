@@ -46,13 +46,24 @@ izplacilo <- function(vrsta, T, type = c("call", "put") ) {
 
 #2.naloga
 
+
+
 binomski <- function(S0,u,d,U,R,T,type){
   q = (1+R-d)/(u-d)
-  razpleti <- hcube(rep(2,U), translation = -1)
-  razpleti_1 <- d**razpleti * u**(1-razpleti)
-  S0_vektor <- rep(S_0, 2**U)
-  razpleti_2 <- cbind(S0_vektor, razpleti_1)
-  apply()
+  razpleti <- hcube(rep(2,U), translation = -1) #drevo stanj 1 pomeni up, 0 down
+  razpleti_1 <- d**(1-razpleti) * u**(razpleti)
+  #S0_vektor <- rep(S_0, 2**U)
+  k <- rowSums(razpleti) #vektor, ki za vsako vrstico pove kolikokrat je up
+  vektor_verjetnosti_koncnih_stanj <- q^k *(1-q)^(U-k)
+  
+  razpleti_1 <- t(apply( razpleti_1, 1, cumprod))
+  vrednosti <- cbind(S0, S0*razpleti_1)
+  
+  izplacila <- apply(vrednosti, 1, function(x) izplacilo(x,T,type))
+  E <- sum(izplacila * vektor_verjetnosti_koncnih_stanj)
+  return (E/(1+R)^U)
+  
+  
 }
   
 
