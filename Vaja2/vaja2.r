@@ -83,11 +83,17 @@ for (i in vektor_N) {
 
 #vektor_S
 
-#2.b
+#3.b
 
 Upanje_simulacija = mean(vektor_S)
 Variacija_simulacija = var(vektor_S)
 
 #upanje podobno, varianca razlikuje kar precej -> zelo podobno varianci iz 1.naloge
+
+#3.c
+
+#3.d
+plot(porazdelitvena)
+plot(ecdf(vektor_S))
 
 
