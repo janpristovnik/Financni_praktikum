@@ -47,7 +47,7 @@ izplacilo <- function(vrsta, T, type = c("call", "put") ) {
 #2.naloga
 
 
-
+#a.primer
 binomski <- function(S0,u,d,U,R,T,type){
   q = (1+R-d)/(u-d)
   razpleti <- hcube(rep(2,U), translation = -1) #drevo stanj 1 pomeni up, 0 down
@@ -65,7 +65,31 @@ binomski <- function(S0,u,d,U,R,T,type){
   
   
 }
+
+#2.naloga b primer
+
+monte <- function(S0, u, d, U, R, T, type, N){
+  q = (1+R-d)/(u-d)
+  stanja <- matrix(rbinom(U*N,1,q),N,U) 
+  stanja_1 <- d**(1-stanja) * u**(stanja)
   
+  k <- rowSums(stanja) #vektor, ki za vsako vrstico pove kolikokrat je up
+  vektor_verjetnosti_koncnih_stanj <- q^k *(1-q)^(U-k)
+  
+  stanja_1 <- t(apply(stanja_1, 1, cumprod))
+  vrednosti <- cbind(S0, S0*stanja_1)
+  
+  izplacila <- apply(vrednosti, 1, function(x) izplacilo(x,T,type))
+  E= sum(izplacila)/ length(izplacila)
+  return (E/(1+R)^U)
+  
+}
+
+#simuliranje vrednosti
+monte(60,1.05,0.95,15,0.01,8,"put",10) 
+monte(60,1.05,0.95,15,0.01,8,"put",100) 
+monte(60,1.05,0.95,15,0.01,8,"put",1000) 
+
 
 
   
