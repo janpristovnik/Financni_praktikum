@@ -54,15 +54,16 @@ plot(porazdelitvena)
 
 #2.d izračunaj upanje in disperzijo komulativne škode Var(s) = var(y)*E(N) + E(y)^2*var(N)
 
+vrednosti <- knots(porazdelitvena)
+verjetnosti <- diff(porazdelitvena)
 
 
-Upanje_S_diskretno <- (vektor_x %*% diskretna_y) *15
-E_y <- vektor_x %*% diskretna_y
-E_ykvadrat <- (vektor_x^2 %*% diskretna_y)
-Var_y <- E_ykvadrat - E_y ^2 
 
-Var_S <- Var_y * 15 + E_y ^2 * 15
 
+Upanje_S_diskretno <- vrednosti %*% verjetnosti
+
+
+Var_S <- (vrednosti * vrednosti) %*% verjetnosti - Upanje_S_diskretno^2 # Var(S) = E[S^2] - E[S]^2
 #2.e
 
 odst_995 <- VaR(porazdelitvena, 0.995)
@@ -88,12 +89,29 @@ for (i in vektor_N) {
 Upanje_simulacija = mean(vektor_S)
 Variacija_simulacija = var(vektor_S)
 
-#upanje podobno, varianca razlikuje kar precej -> zelo podobno varianci iz 1.naloge
+#upanje in varianca zelo podobni
 
 #3.c
 
+<<<<<<< HEAD
 #3.d
 plot(porazdelitvena)
 plot(ecdf(vektor_S))
 
+=======
+tvegana_vrednost_ <- sort(vektor_S)[9950]
+
+#3.d
+plot(porazdelitvena)
+plot(ecdf(vektor_S),
+     col = 'green',
+     add = TRUE,
+     lwd = 2)
+legend('bottomright', 
+       legend = c('Panjerjev algoritem', 'Monte Carlo simulacija'),
+       col = c('black', 'green'),
+       lty = 1:1, 
+       bty = "n", 
+       lwd = 2)
+>>>>>>> a203b847e05557b29cd6ae281a7978152ffbbff6
 
