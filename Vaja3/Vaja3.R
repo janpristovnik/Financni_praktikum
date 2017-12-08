@@ -91,7 +91,92 @@ monte(60,1.05,0.95,15,0.01,8,"put",100)
 monte(60,1.05,0.95,15,0.01,8,"put",1000) 
 
 
+#3.naloga
 
-  
+#a.primer 
+
+N1 <- c()
+N2 <- c()
+N3 <- c()
+
+M <- 100 
+
+for (i in c(1:M)){
+  N1 <- c(N1,monte(60,1.05,0.95,15,0.01,8,"put",10) )
+  N2 <- c(N2,monte(60,1.05,0.95,15,0.01,8,"put",100) )
+  N3 <- c(N3,monte(60,1.05,0.95,15,0.01,8,"put",1000) )
+}
+cena_binomske <- binomski(60,1.05,0.95,15,0.01,8,"put") #cena premije dobljena z binomksim modelom
+
+min <- floor(min(c(N1,N2,N3))) 
+max <- ceiling(max(c(N1,N2,N3))) 
 
 
+#histogram N1
+pov.N1 <- mean(N1) #povprečje vrednosti N1
+odklon.N1 <- sqrt(var(N1)) #standardni odklon vrednosti N1
+x1_odklon_desno <- cena_binomske + odklon.N1
+x1_odklon_levo <- cena_binomske - odklon.N1
+
+histogram1 <-hist(N1,breaks = 20,
+                  main = "Monte Carlo: N=10",
+                  xlab = "Premija",
+                  xlim = c(min, max),
+                  col ="yellow")
+abline(v= pov.N1, col = "green")
+abline (v = cena_binomske, col = "red", lty = "dashed")
+arrows(x0 = cena_binomske, y0 = 0, x1= x1_odklon_desno, col= "green", length = 0.1 )
+arrows(x0 = cena_binomske, y0 = 0, x1= x1_odklon_levo, col= "green", length = 0.1 )
+
+legend('topright', 
+       legend = c('Monte Carlo', 'Analiza modela'),
+       col = c('green', 'red'),
+       cex=0.8,
+       lty=c("solid","dashed"))
+
+
+#histogram N2
+pov.N2 <- mean(N2) #povprečje vrednosti N1
+odklon.N2 <- sqrt(var(N2)) #standardni odklon vrednosti N1
+x2_odklon_desno <- cena_binomske + odklon.N2
+x2_odklon_levo <- cena_binomske - odklon.N2
+
+
+histogram2 <-hist(N2,breaks = 20,
+                  main = "Monte Carlo: N=100",
+                  xlab = "Premija",
+                  xlim = c(min, max),
+                  col ="yellow")
+abline(v= pov.N2, col = "green")
+abline (v = cena_binomske, col = "red", lty = "dashed")
+arrows(x0 = cena_binomske, y0 = 0, x1= x2_odklon_desno, col= "green", length = 0.1 )
+arrows(x0 = cena_binomske, y0 = 0, x1= x2_odklon_levo, col= "green", length = 0.1 )
+
+
+legend('topright', 
+       legend = c('Monte Carlo', 'Analiza modela'),
+       col = c('green', 'red'),
+       cex=0.8,
+       lty=c("solid","dashed"))
+
+#histogram N3
+pov.N3 <- mean(N3) #povprečje vrednosti N1
+odklon.N3 <- sqrt(var(N3)) #standardni odklon vrednosti N1
+x3_odklon_desno <- cena_binomske + odklon.N3
+x3_odklon_levo <- cena_binomske - odklon.N3
+
+
+histogram3 <-hist(N3,breaks = 20,
+                  main = "Monte Carlo: N=1000",
+                  xlab = "Premija",
+                  xlim = c(min, max),
+                  col ="yellow")
+abline(v= pov.N3, col = "green")
+abline (v = cena_binomske, col = "red", lty = "dashed")
+arrows(x0 = cena_binomske, y0 = 0, x1= x3_odklon_desno, col= "green", length = 0.1 )
+arrows(x0 = cena_binomske, y0 = 0, x1= x3_odklon_levo, col= "green", length = 0.1 )
+legend('topright', 
+       legend = c('Monte Carlo', 'Analiza modela'),
+       col = c('green', 'red'),
+       cex=0.8,
+       lty=c("solid","dashed"))
